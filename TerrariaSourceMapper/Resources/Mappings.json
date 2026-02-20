@@ -1,0 +1,21 @@
+{
+  "Entries": [
+    {
+      "Pattern": "Main\\.tile\\[\\w+, \\w+\\]\\.type == (?<match>\\d+)",
+      "Mapper": {
+        "@type": "ClassConstantsMapper",
+        "FilePath": "Terraria.ID/TileID",
+        "ConstantType": "ushort"
+      }
+    },
+    {
+      "Pattern": "case (?<match>\\d+):",
+      "Whitelist":  [ "Terraria/Item.cs" ],
+      "Mapper": {
+        "@type": "ClassConstantsMapper",
+        "FilePath": "Terraria.ID/ItemID",
+        "ConstantType": "short"
+      }
+    }
+  ]
+}
