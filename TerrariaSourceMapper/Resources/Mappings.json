@@ -2,80 +2,45 @@
   "Entries": [
     {
       "Pattern": "Main\\.tile\\[\\w+, \\w+\\]\\.type == (?<match>\\d+)",
-      "Mapper": {
-        "@type": "ClassConstantsMapper",
-        "FilePath": "Terraria.ID/TileID",
-        "ConstantType": "ushort"
-      }
+      "Mapper": { "@type": "ClassConstantsMapper", "FilePath": "Terraria.ID/TileID", "ConstantType": "ushort" }
     },
     {
       "Pattern": "case (?<match>\\d+):",
       "Whitelist": [ "Terraria/Item.cs" ],
-      "Mapper": {
-        "@type": "ClassConstantsMapper",
-        "FilePath": "Terraria.ID/ItemID",
-        "ConstantType": "short"
-      }
+      "Mapper": { "@type": "ClassConstantsMapper", "FilePath": "Terraria.ID/ItemID", "ConstantType": "short" }
     },
     {
       "Pattern": "this\\.shoot = (?<match>\\d+);",
       "Whitelist": [ "Terraria/Item.cs" ],
-      "Mapper": {
-        "@type": "ClassConstantsMapper",
-        "FilePath": "Terraria.ID/ProjectileID",
-        "ConstantType": "short"
-      }
+      "Mapper": { "@type": "ClassConstantsMapper", "FilePath": "Terraria.ID/ProjectileID", "ConstantType": "short" }
     },
     {
       "Pattern": "this\\.type == (?<match>\\d+)",
       "Whitelist": [ "Terraria/Projectile.cs" ],
-      "Mapper": {
-        "@type": "ClassConstantsMapper",
-        "FilePath": "Terraria.ID/ProjectileID",
-        "ConstantType": "short"
-      }
+      "Mapper": { "@type": "ClassConstantsMapper", "FilePath": "Terraria.ID/ProjectileID", "ConstantType": "short" }
     },
     {
       "Pattern": "proj\\.type == (?<match>\\d+)",
       "Whitelist": [ "Terraria/Main.cs" ],
-      "Mapper": {
-        "@type": "ClassConstantsMapper",
-        "FilePath": "Terraria.ID/ProjectileID",
-        "ConstantType": "short"
-      }
+      "Mapper": { "@type": "ClassConstantsMapper", "FilePath": "Terraria.ID/ProjectileID", "ConstantType": "short" }
     },
     {
       "Pattern": "NPC\\.AnyNPCs\\((?<match>\\d+)\\)",
-      "Mapper": {
-        "@type": "ClassConstantsMapper",
-        "FilePath": "Terraria.ID/NPCID",
-        "ConstantType": "short"
-      }
+      "Mapper": { "@type": "ClassConstantsMapper", "FilePath": "Terraria.ID/NPCID", "ConstantType": "short" }
     },
     {
       "Pattern": "SpawnNPC\\(.*,.*, *(?<match>\\d+)\\)",
-      "Mapper": {
-        "@type": "ClassConstantsMapper",
-        "FilePath": "Terraria.ID/NPCID",
-        "ConstantType": "short"
-      }
+      "Mapper": { "@type": "ClassConstantsMapper", "FilePath": "Terraria.ID/NPCID", "ConstantType": "short" }
     },
     {
       "Pattern": "this\\.type == (?<match>\\d+)",
       "Whitelist": [ "Terraria/NPC.cs" ],
-      "Mapper": {
-        "@type": "ClassConstantsMapper",
-        "FilePath": "Terraria.ID/NPCID",
-        "ConstantType": "short"
-      }
+      "Mapper": { "@type": "ClassConstantsMapper", "FilePath": "Terraria.ID/NPCID", "ConstantType": "short" }
     },
     {
       "Pattern": "this\\.aiStyle =?= (?<match>\\d+)",
       "Whitelist": [ "Terraria/NPC.cs" ],
-      "Mapper": {
-        "@type": "SelectionMapper",
-        "Name": "NPCAIID"
-      }
+      "Mapper": { "@type": "SelectionMapper", "Name": "NPCAIID" }
     }
   ],
   "GeneratedClasses": {
