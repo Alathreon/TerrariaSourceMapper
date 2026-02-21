@@ -12,7 +12,7 @@
             return new ClassPath(null, _name);
         }
 
-        public abstract string? GetReplacementData(string value);
+        public abstract string? GetReplacementData(string value, Dictionary<string, Dictionary<string, string>> generatedClasses);
         public abstract void Init(string path);
     }
 }

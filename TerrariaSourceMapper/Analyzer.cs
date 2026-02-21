@@ -25,6 +25,9 @@ namespace TerrariaSourceMapper
                 WriteIndented = true // pretty print
             };
             Mappings mappings = JsonSerializer.Deserialize<Mappings>(content, options) ?? throw new InvalidOperationException();
+            int t = mappings.Entries.Count;
+            mappings.Entries.RemoveAll(e => e.Ignore);
+            Console.WriteLine($"Found {t} mappings, {t - mappings.Entries.Count} are ignored");
             mappings.Entries.ForEach(m => m.Mapper.Init(source));
 
             long totalFiles = Directory.EnumerateFiles(source, "*.cs", SearchOption.AllDirectories).LongCount();
@@ -47,6 +50,13 @@ namespace TerrariaSourceMapper
                 {
                     foreach (var entry in mappings.Entries)
                     {
+                        if (lastPrint.Elapsed.TotalSeconds >= 1)
+                        {
+                            double percent = (processedFiles / (double)totalFiles) * 100;
+                            Console.WriteLine($"Processed {processedFiles,5}/{totalFiles,5} files {processedFiles * 100D / totalFiles,5:F2}%, in {stopwatch.Elapsed.TotalSeconds:F1}s");
+                            lastPrint.Restart();
+                        }
+
                         if (entry.Whitelist.Count > 0 && !entry.Whitelist.Contains(relativeFile)) continue;
                         if (entry.Blacklist.Count > 0 && entry.Blacklist.Contains(relativeFile)) continue;
                         Match match = Regex.Match(line, entry.Pattern);
@@ -54,7 +64,7 @@ namespace TerrariaSourceMapper
                         {
                             var group = match.Groups[MappingsEntry.GROUP_NAME];
                             var value = group.Value;
-                            var replacement = entry.Mapper.GetReplacementData(value);
+                            var replacement = entry.Mapper.GetReplacementData(value, mappings.GeneratedClasses);
                             var theClass = entry.Mapper.GetClass();
                             string? newContent = null;
                             if (replacement == null && ignoreFailed) continue;
@@ -69,13 +79,6 @@ namespace TerrariaSourceMapper
                             var reportEntry = new ReportEntry(lineNumber, entry.Pattern, line, newContent, value, replacement, theClass.FilePath, theClass.MemberPath);
                             reportEntries.Add(reportEntry);
                             total++;
-                        }
-
-                        if (lastPrint.Elapsed.TotalSeconds >= 1)
-                        {
-                            double percent = (processedFiles / (double)totalFiles) * 100;
-                            Console.WriteLine($"Processed {processedFiles,5}/{totalFiles,5} files {processedFiles * 100D / totalFiles,5:F2}%, in {stopwatch.Elapsed.TotalSeconds:F1}s");
-                            lastPrint.Restart();
                         }
                     }
                     lineNumber++;

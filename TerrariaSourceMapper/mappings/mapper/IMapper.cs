@@ -6,7 +6,7 @@ namespace TerrariaSourceMapper.mappings.mapper
     internal interface IMapper
     {
         public static readonly string MAPPER_GENERATED_NAMESPACE = "TerrariaSourceMapper";
-        string? GetReplacementData(string value);
+        string? GetReplacementData(string value, Dictionary<string, Dictionary<string, string>> generatedClasses);
         ClassPath GetClass();
         void Init(string path);
 

@@ -34,7 +34,7 @@ namespace TerrariaSourceMapper.mappings.mapper
             return new ClassPath(classNamespace, string.Join('.', MemberPath));
         }
 
-        public string? GetReplacementData(string value)
+        public string? GetReplacementData(string value, Dictionary<string, Dictionary<string, string>> generatedClasses)
         {
             return Mapping.TryGetValue(value, out var result) ? result : null;
         }

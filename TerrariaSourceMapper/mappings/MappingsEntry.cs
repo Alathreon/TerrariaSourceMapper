@@ -11,9 +11,10 @@ namespace TerrariaSourceMapper.mappings
         public readonly List<string> Blacklist;
         public readonly string Pattern;
         public readonly IMapper Mapper;
+        public readonly bool Ignore;
 
         [JsonConstructor]
-        public MappingsEntry(string Pattern, IMapper Mapper, List<string>? Whitelist = null, List<string>? Blacklist = null)
+        public MappingsEntry(string Pattern, IMapper Mapper, List<string>? Whitelist = null, List<string>? Blacklist = null, bool Ignore = false)
         {
             if (!new Regex(Pattern).GetGroupNames().Contains(GROUP_NAME))
             {
@@ -29,6 +30,7 @@ namespace TerrariaSourceMapper.mappings
             this.Blacklist = [.. Blacklist.Select(p => p.Replace('/', '\\'))]; ;
             this.Pattern = Pattern;
             this.Mapper = Mapper;
+            this.Ignore = Ignore;
         }
     }
 }
