@@ -6,6 +6,7 @@
     },
     {
       "Pattern": "case (?<match>\\d+):",
+      "MethodPattern": "SetDefaults|IsConsideredSameItemAsType|DefaultToSeaShell|SetFoodDefaults|GetAlpha|GetDrawHitbox",
       "Whitelist": [ "Terraria/Item.cs" ],
       "Mapper": { "@type": "ClassConstantsMapper", "FilePath": "Terraria.ID/ItemID", "ConstantType": "short" }
     },
