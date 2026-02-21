@@ -10,11 +10,169 @@
     },
     {
       "Pattern": "case (?<match>\\d+):",
-      "Whitelist":  [ "Terraria/Item.cs" ],
+      "Whitelist": [ "Terraria/Item.cs" ],
       "Mapper": {
         "@type": "ClassConstantsMapper",
         "FilePath": "Terraria.ID/ItemID",
         "ConstantType": "short"
+      }
+    },
+    {
+      "Pattern": "this\\.shoot = (?<match>\\d+);",
+      "Whitelist": [ "Terraria/Item.cs" ],
+      "Mapper": {
+        "@type": "ClassConstantsMapper",
+        "FilePath": "Terraria.ID/ProjectileID",
+        "ConstantType": "short"
+      }
+    },
+    {
+      "Pattern": "this\\.type == (?<match>\\d+)",
+      "Whitelist": [ "Terraria/Projectile.cs" ],
+      "Mapper": {
+        "@type": "ClassConstantsMapper",
+        "FilePath": "Terraria.ID/ProjectileID",
+        "ConstantType": "short"
+      }
+    },
+    {
+      "Pattern": "proj\\.type == (?<match>\\d+)",
+      "Whitelist": [ "Terraria/Main.cs" ],
+      "Mapper": {
+        "@type": "ClassConstantsMapper",
+        "FilePath": "Terraria.ID/ProjectileID",
+        "ConstantType": "short"
+      }
+    },
+    {
+      "Pattern": "NPC\\.AnyNPCs\\((?<match>\\d+)\\)",
+      "Mapper": {
+        "@type": "ClassConstantsMapper",
+        "FilePath": "Terraria.ID/NPCID",
+        "ConstantType": "short"
+      }
+    },
+    {
+      "Pattern": "SpawnNPC\\(.*,.*, *(?<match>\\d+)\\)",
+      "Mapper": {
+        "@type": "ClassConstantsMapper",
+        "FilePath": "Terraria.ID/NPCID",
+        "ConstantType": "short"
+      }
+    },
+    {
+      "Pattern": "this\\.type == (?<match>\\d+)",
+      "Whitelist": [ "Terraria/NPC.cs" ],
+      "Mapper": {
+        "@type": "ClassConstantsMapper",
+        "FilePath": "Terraria.ID/NPCID",
+        "ConstantType": "short"
+      }
+    },
+    {
+      "Pattern": "this\\.aiStyle =?= (?<match>\\d+)",
+      "Whitelist": [ "Terraria/NPC.cs" ],
+      "Mapper": {
+        "@type": "SelectionMapper",
+        "Name": "NPCAIID",
+        "Mappings": {
+          "0": "NoAI",
+          "1": "SlimeAI",
+          "2": "DemonEyeAI",
+          "3": "FighterAI",
+          "4": "EyeofCthulhuAI",
+          "5": "FlyingAI",
+          "6": "WormAI",
+          "7": "PassiveAI",
+          "9": "SpellAI",
+          "10": "CursedSkullAI",
+          "11": "HeadAI",
+          "12": "SkeletronHandAI",
+          "13": "PlantAI",
+          "14": "BatAI",
+          "15": "KingSlimeAI",
+          "16": "SwimmingAI",
+          "17": "VultureAI",
+          "18": "JellyfishAI",
+          "19": "AntlionAI",
+          "20": "SpikeBallAI",
+          "21": "BlazingWheelAI",
+          "22": "HoveringAI",
+          "23": "FlyingWeaponAI",
+          "24": "BirdAI",
+          "25": "MimicAI",
+          "26": "UnicornAI",
+          "27": "WallofFleshAI",
+          "28": "WallofFleshEyeAI",
+          "29": "TheHungryAI",
+          "30": "RetinazerAI",
+          "31": "SpazmatismAI",
+          "32": "SkeletronPrimeHeadAI",
+          "33": "PrimeSawAI",
+          "34": "PrimeViceAI",
+          "35": "PrimeCannonAI",
+          "36": "PrimeLaserAI",
+          "37": "TheDestroyerAI",
+          "38": "SnowmanAI",
+          "39": "TortoiseAI",
+          "40": "SpiderAI",
+          "41": "HerplingAI",
+          "42": "LostGirlAI",
+          "43": "QueenBeeAI",
+          "44": "FlyingFishAI",
+          "45": "GolemBodyAI",
+          "46": "GolemHeadAI",
+          "47": "GolemFistAI",
+          "48": "FreeGolemHeadAI",
+          "49": "AngryNimbusAI",
+          "50": "SporeAI",
+          "51": "PlanteraAI",
+          "52": "PlanterasHookAI",
+          "53": "PlanterasTentacleAI",
+          "54": "BrainofCthulhuAI",
+          "55": "CreeperAI",
+          "56": "DungeonSpiritAI",
+          "57": "MourningWoodAI",
+          "58": "PumpkingAI",
+          "59": "PumpkingScytheAI",
+          "60": "IceQueenAI",
+          "61": "SantaNK1AI",
+          "62": "ElfCopterAI",
+          "63": "FlockoAI",
+          "64": "FireflyAI",
+          "65": "ButterflyAI",
+          "66": "PassiveWormAI",
+          "67": "SnailAI",
+          "68": "DuckAI",
+          "78": "MoonLordHandAI",
+          "79": "MoonLordHeadAI",
+          "80": "MartianProbeAI",
+          "81": "TrueEyeofCthulhuAI",
+          "82": "MoonLeechClotAI",
+          "83": "LunaticDevoteeAI",
+          "84": "LunaticCultistAI",
+          "85": "StarCellBrainSucklerAI",
+          "86": "AncientVisionAI",
+          "87": "BiomeMimicAI",
+          "88": "MothronAI",
+          "98": "Unknown",
+          "99": "SolarFragmentAI",
+          "100": "AncientLightAI",
+          "101": "AncientDoomAI",
+          "102": "SandElementalAI",
+          "109": "DarkMageAI",
+          "110": "BetsyAI",
+          "111": "EtherianLightningBugAI",
+          "112": "FairyAI",
+          "113": "WindyBalloonAI",
+          "121": "QueenSlimeAI",
+          "122": "PiratesCurseAI",
+          "123": "DeerclopsAI",
+          "124": "DeerclopsLegAI",
+          "125": "ClumsyBalloonSlimeAI",
+          "126": "StatueAI",
+          "127": "PalAI"
+        }
       }
     }
   ]
