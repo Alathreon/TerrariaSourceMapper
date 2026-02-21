@@ -10,15 +10,20 @@ namespace TerrariaSourceMapper.mappings
         public readonly List<string> Whitelist;
         public readonly List<string> Blacklist;
         public readonly string Pattern;
+        public readonly string? MethodPattern;
         public readonly IMapper Mapper;
         public readonly bool Ignore;
 
         [JsonConstructor]
-        public MappingsEntry(string Pattern, IMapper Mapper, List<string>? Whitelist = null, List<string>? Blacklist = null, bool Ignore = false)
+        public MappingsEntry(string Pattern, IMapper Mapper, List<string>? Whitelist = null, List<string>? Blacklist = null, string? MethodPattern = null, bool Ignore = false)
         {
             if (!new Regex(Pattern).GetGroupNames().Contains(GROUP_NAME))
             {
                 throw new ArgumentException($"Pattern must contain the group '{GROUP_NAME}', but does not: {Pattern}");
+            }
+            if(MethodPattern != null)
+            {
+                new Regex(MethodPattern);
             }
             Whitelist ??= [];
             Blacklist ??= [];
@@ -30,6 +35,7 @@ namespace TerrariaSourceMapper.mappings
             this.Blacklist = [.. Blacklist.Select(p => p.Replace('/', '\\'))]; ;
             this.Pattern = Pattern;
             this.Mapper = Mapper;
+            this.MethodPattern = MethodPattern;
             this.Ignore = Ignore;
         }
     }
