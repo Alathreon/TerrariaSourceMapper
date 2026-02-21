@@ -34,10 +34,16 @@ namespace TerrariaSourceMapper.mappings.mapper
             return new ClassPath(classNamespace, string.Join('.', MemberPath));
         }
 
-        public string? GetReplacementData(string value, Dictionary<string, Dictionary<string, string>> generatedClasses)
+        public string GetConstantType(Dictionary<string, GeneratedClass> generatedClasses)
+        {
+            return ConstantType;
+        }
+
+        public string? GetReplacementData(string value, Dictionary<string, GeneratedClass> generatedClasses)
         {
             return Mapping.TryGetValue(value, out var result) ? result : null;
         }
+
 
         public void Init(string path)
         {

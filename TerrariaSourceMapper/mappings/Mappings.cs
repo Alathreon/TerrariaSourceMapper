@@ -1,6 +1,6 @@
 ﻿namespace TerrariaSourceMapper.mappings
 {
-    internal record Mappings(List<MappingsEntry> Entries, Dictionary<string, Dictionary<string, string>> GeneratedClasses)
+    internal record Mappings(List<MappingsEntry> Entries, Dictionary<string, GeneratedClass> GeneratedClasses)
     {
     }
 }

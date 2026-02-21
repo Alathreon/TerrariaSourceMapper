@@ -35,7 +35,7 @@ namespace TerrariaSourceMapper
                             {
                                 classes[entry.ConstantClass] = [];
                             }
-                            classes[entry.ConstantClass].Add(new ConstantEntry(entry.Replacement ?? throw new InvalidOperationException(), entry.Match));
+                            classes[entry.ConstantClass].Add(new ConstantEntry(entry.Replacement ?? throw new InvalidOperationException(), entry.ConstantType, entry.Match));
                             generatedImports.Add("using " + GENERATED_NAMESPACE + ";");
                         }
                         else
@@ -61,7 +61,7 @@ namespace TerrariaSourceMapper
                 generatedSource += "    internal class " + c.Key + Environment.NewLine + "    {" + Environment.NewLine;
                 foreach (var entry in c.Value)
                 {
-                    generatedSource += "        public static readonly long " + entry.FieldName + " = " + entry.Value + ";" + Environment.NewLine;
+                    generatedSource += "        public static readonly " + entry.FieldType + " " + entry.FieldName + " = " + entry.Value + ";" + Environment.NewLine;
                 }
                 generatedSource += "    }" + Environment.NewLine;
             }
@@ -83,7 +83,7 @@ namespace TerrariaSourceMapper
                 File.Copy(file, destinationPath, overwrite: true);
             }
         }
-        private record ConstantEntry(string FieldName, string Value) : IComparable<ConstantEntry>
+        private record ConstantEntry(string FieldName, string FieldType, string Value) : IComparable<ConstantEntry>
         {
             public int CompareTo(ConstantEntry? other)
             {

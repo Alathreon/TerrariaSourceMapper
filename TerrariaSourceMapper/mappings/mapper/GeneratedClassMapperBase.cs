@@ -12,7 +12,8 @@
             return new ClassPath(null, _name);
         }
 
-        public abstract string? GetReplacementData(string value, Dictionary<string, Dictionary<string, string>> generatedClasses);
+        public abstract string? GetReplacementData(string value, Dictionary<string, GeneratedClass> generatedClasses);
+        public abstract string GetConstantType(Dictionary<string, GeneratedClass> generatedClasses);
         public abstract void Init(string path);
     }
 }

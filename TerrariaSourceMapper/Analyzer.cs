@@ -76,7 +76,7 @@ namespace TerrariaSourceMapper
                             {
                                 newContent = string.Concat(line.AsSpan(0, group.Index), theClass.MemberPath + "." + replacement, line.AsSpan(group.Index + group.Length));
                             }
-                            var reportEntry = new ReportEntry(lineNumber, entry.Pattern, line, newContent, value, replacement, theClass.FilePath, theClass.MemberPath);
+                            var reportEntry = new ReportEntry(lineNumber, entry.Pattern, line, newContent, value, replacement, theClass.FilePath, theClass.MemberPath, entry.Mapper.GetConstantType(mappings.GeneratedClasses));
                             reportEntries.Add(reportEntry);
                             total++;
                         }
