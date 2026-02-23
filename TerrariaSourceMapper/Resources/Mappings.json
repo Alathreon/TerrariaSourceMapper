@@ -11,9 +11,25 @@
       "Mapper": { "@type": "ClassConstantsMapper", "FilePath": "Terraria.ID/ItemID", "ConstantType": "short" }
     },
     {
+      "Pattern": "Item\\.NewItem\\(([^,]+,){5} *(?<match>\\d+)",
+      "Mapper": { "@type": "ClassConstantsMapper", "FilePath": "Terraria.ID/ItemID", "ConstantType": "short" }
+    },
+    {
       "Pattern": "this\\.shoot = (?<match>\\d+);",
       "Whitelist": [ "Terraria/Item.cs" ],
       "Mapper": { "@type": "ClassConstantsMapper", "FilePath": "Terraria.ID/ProjectileID", "ConstantType": "short" }
+    },
+    {
+      "Pattern": "i == (?<match>\\d+)",
+      "MethodPattern": "Calculate",
+      "Whitelist": [ "Terraria/WorldGen.cs" ],
+      "Mapper": { "@type": "ClassConstantsMapper", "FilePath": "Terraria.ID/TileID", "ConstantType": "ushort" }
+    },
+    {
+      "Pattern": "j == (?<match>\\d+)",
+      "MethodPattern": "Calculate",
+      "Whitelist": [ "Terraria/WorldGen.cs" ],
+      "Mapper": { "@type": "ClassConstantsMapper", "FilePath": "Terraria.ID/WallID", "ConstantType": "ushort" }
     },
     {
       "Pattern": "this\\.type == (?<match>\\d+)",
