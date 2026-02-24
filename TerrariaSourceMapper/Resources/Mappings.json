@@ -15,6 +15,10 @@
       "Mapper": { "@type": "ClassConstantsMapper", "FilePath": "Terraria.ID/ItemID", "ConstantType": "short" }
     },
     {
+      "Pattern": "item\\.type +[\\?=!]= *(?<match>\\d+)",
+      "Mapper": { "@type": "ClassConstantsMapper", "FilePath": "Terraria.ID/ItemID", "ConstantType": "short" }
+    },
+    {
       "Pattern": "this\\.shoot = (?<match>\\d+);",
       "Whitelist": [ "Terraria/Item.cs" ],
       "Mapper": { "@type": "ClassConstantsMapper", "FilePath": "Terraria.ID/ProjectileID", "ConstantType": "short" }
