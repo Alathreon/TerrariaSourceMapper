@@ -26,23 +26,32 @@ namespace TerrariaSourceMapper
                 var generatedImports = new SortedSet<string>();
                 foreach (var entry in entries)
                 {
-                    if (entry.NewContent != null)
+                    var line = lines[entry.Line];
+                    int prevEnd = 0;
+                    int offset = 0;
+                    foreach (var match in entry.Matches)
                     {
-                        lines[entry.Line] = entry.NewContent;
-                        if (entry.ConstantNamespace == null)
+                        if (match.Replacement == null) continue;
+                        if (match.MatchStart < prevEnd) throw new InvalidOperationException($"Match started before the previous match {match} < {prevEnd}");
+
+                        line = line.Substring(0, offset + match.MatchStart) + match.Replacement + line.Substring(offset + match.MatchStart + match.MatchLength);
+                        prevEnd = match.MatchStart + match.MatchLength;
+                        offset += match.Replacement.Length - match.MatchLength;
+                        if (match.ConstantNamespace == null)
                         {
-                            if (!classes.ContainsKey(entry.ConstantClass))
+                            if (!classes.ContainsKey(match.ConstantClass))
                             {
-                                classes[entry.ConstantClass] = [];
+                                classes[match.ConstantClass] = [];
                             }
-                            classes[entry.ConstantClass].Add(new ConstantEntry(entry.Replacement ?? throw new InvalidOperationException(), entry.ConstantType, entry.Match));
+                            classes[match.ConstantClass].Add(new ConstantEntry(match.Replacement ?? throw new InvalidOperationException(), match.ConstantType, match.Match));
                             generatedImports.Add("using " + GENERATED_NAMESPACE + ";");
                         }
                         else
                         {
-                            generatedImports.Add("using " + entry.ConstantNamespace + ";");
+                            generatedImports.Add("using " + match.ConstantNamespace + ";");
                         }
                     }
+                    lines[entry.Line] = line;
 
                     if (lastPrint.Elapsed.TotalSeconds >= 1)
                     {

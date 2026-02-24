@@ -7,7 +7,6 @@ using System.Text.RegularExpressions;
 using TerrariaSourceMapper.mappings;
 using TerrariaSourceMapper.mappings.mapper;
 using TerrariaSourceMapper.report;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace TerrariaSourceMapper
 {
@@ -40,6 +39,7 @@ namespace TerrariaSourceMapper
             int processedFiles = 0;
             int total = 0;
             int fails = 0;
+            int totalEntries = 0;
             var reportDict = new SortedDictionary<string, List<ReportEntry>>();
             foreach (string file in Directory.EnumerateFiles(
              source,
@@ -53,7 +53,7 @@ namespace TerrariaSourceMapper
                     && (e.Blacklist.Count == 0 || !e.Whitelist.Contains(relativeFile)));
 
                 var reportEntries = new List<ReportEntry>();
-                
+
                 var code = File.ReadAllText(file);
                 var lines = code.Split(
                     ["\r\n", "\r", "\n"],
@@ -69,7 +69,7 @@ namespace TerrariaSourceMapper
                 foreach (var member in members)
                 {
                     var memberMappings = fileMappings;
-                    if(member is MethodDeclarationSyntax method)
+                    if (member is MethodDeclarationSyntax method)
                     {
                         memberMappings = fileMappings.Where(e => e.MethodPattern == null || Regex.IsMatch(method.Identifier.Text, e.MethodPattern));
                     }
@@ -79,6 +79,14 @@ namespace TerrariaSourceMapper
                     int lineNumber = bodyStart;
                     foreach (var line in lines.AsSpan(bodyStart, bodyEnd + 1 - bodyStart))
                     {
+                        var memberName = member switch
+                        {
+                            MethodDeclarationSyntax m => m.Identifier.Text,
+                            ConstructorDeclarationSyntax c => c.Identifier.Text,
+                            AccessorDeclarationSyntax a => a.Keyword.Text,
+                            _ => throw new InvalidOperationException()
+                        };
+                        var matches = new List<ReportMatch>();
                         foreach (var entry in memberMappings)
                         {
                             if (lastPrint.Elapsed.TotalSeconds >= 1)
@@ -87,35 +95,32 @@ namespace TerrariaSourceMapper
                                 Console.WriteLine($"Processed {processedFiles,5}/{totalFiles,5} files {processedFiles * 100D / totalFiles,5:F2}%, in {stopwatch.Elapsed.TotalSeconds:F1}s");
                                 lastPrint.Restart();
                             }
-
-                            Match match = Regex.Match(line, entry.Pattern);
-                            if (match.Success)
+                            foreach (Match match in Regex.Matches(line, entry.Pattern))
                             {
-                                var group = match.Groups[MappingsEntry.GROUP_NAME];
-                                var value = group.Value;
-                                var replacement = entry.Mapper.GetReplacementData(value, mappings.GeneratedClasses);
-                                var theClass = entry.Mapper.GetClass();
-                                string? newContent = null;
-                                if (replacement == null && ignoreFailed) continue;
-                                if (replacement == null)
+                                if (match.Success)
                                 {
-                                    fails++;
+                                    var group = match.Groups[MappingsEntry.GROUP_NAME];
+                                    foreach (Capture capture in group.Captures)
+                                    {
+                                        var value = capture.Value;
+                                        var replacement = entry.Mapper.GetReplacementData(value, mappings.GeneratedClasses);
+                                        var theClass = entry.Mapper.GetClass();
+                                        if (replacement == null)
+                                        {
+                                            if (ignoreFailed) continue;
+                                            fails++;
+                                        }
+                                        matches.Add(new ReportMatch(entry.Pattern, capture.Index, capture.Length, value, replacement == null ? null : theClass.MemberPath + "." + replacement, theClass.FilePath, theClass.MemberPath, entry.Mapper.GetConstantType(mappings.GeneratedClasses)));
+                                        total++;
+                                    }
                                 }
-                                else
-                                {
-                                    newContent = string.Concat(line.AsSpan(0, group.Index), theClass.MemberPath + "." + replacement, line.AsSpan(group.Index + group.Length));
-                                }
-                                var memberName = member switch
-                                {
-                                    MethodDeclarationSyntax m => m.Identifier.Text,
-                                    ConstructorDeclarationSyntax c => c.Identifier.Text,
-                                    AccessorDeclarationSyntax a => a.Keyword.Text,
-                                    _ => throw new InvalidOperationException()
-                                };
-                                var reportEntry = new ReportEntry(lineNumber, memberName, entry.Pattern, line, newContent, value, replacement, theClass.FilePath, theClass.MemberPath, entry.Mapper.GetConstantType(mappings.GeneratedClasses));
-                                reportEntries.Add(reportEntry);
-                                total++;
                             }
+                        }
+                        if (matches.Count > 0)
+                        {
+                            matches.Sort((a, b) => a.MatchStart.CompareTo(b.MatchStart));
+                            reportEntries.Add(new ReportEntry(lineNumber, memberName, line, matches));
+                            totalEntries++;
                         }
                         lineNumber++;
                     }
@@ -127,7 +132,7 @@ namespace TerrariaSourceMapper
                 processedFiles++;
             }
 
-            var report = new Report(total, fails, reportDict);
+            var report = new Report(total, fails, totalEntries, reportDict);
             options = new JsonSerializerOptions
             {
                 WriteIndented = true // pretty print

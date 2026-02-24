@@ -85,11 +85,12 @@ namespace TerrariaSourceMapper.mappings.mapper
                     {
                         value = Convert.ToInt64(literal.Token.Value!);
                     }
-                    else if(valueExpression is PrefixUnaryExpressionSyntax prefix && prefix.OperatorToken.IsKind(SyntaxKind.MinusToken) &&
+                    else if (valueExpression is PrefixUnaryExpressionSyntax prefix && prefix.OperatorToken.IsKind(SyntaxKind.MinusToken) &&
                             prefix.Operand is LiteralExpressionSyntax innerLiteral)
                     {
                         value = -Convert.ToInt64(innerLiteral.Token.Value!);
-                    } else
+                    }
+                    else
                     {
                         throw new ArgumentException($"Couldn't find constant value for constant: {MemberPath}.{name}");
                     }

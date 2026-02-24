@@ -21,7 +21,7 @@ namespace TerrariaSourceMapper.mappings
             {
                 throw new ArgumentException($"Pattern must contain the group '{GROUP_NAME}', but does not: {Pattern}");
             }
-            if(MethodPattern != null)
+            if (MethodPattern != null)
             {
                 new Regex(MethodPattern);
             }
