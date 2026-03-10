@@ -1,0 +1,17 @@
+{
+  "MappingsSettings": {
+    "kind": "Existing",
+    "Namespace": "Terraria.ID"
+  },
+  "MappingsClass": "ItemID",
+  "MappingsFieldType": "short",
+  "Mappings": [
+    {
+      "Pattern": "case (?<match>\\d+):",
+      "MethodPattern": "SetDefaults|IsConsideredSameItemAsType|DefaultToSeaShell|SetFoodDefaults|GetAlpha|GetDrawHitbox",
+      "Whitelist": [ "Terraria/Item.cs" ]
+    },
+    { "Pattern": "Item\\.NewItem\\(([^,]+,){5} *(?<match>\\d+)" },
+    { "Pattern": "item\\.type +[\\?=!]= *(?<match>\\d+)" }
+  ]
+}

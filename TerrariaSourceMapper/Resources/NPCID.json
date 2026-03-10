@@ -1,0 +1,13 @@
+{
+  "MappingsSettings": {
+    "kind": "Existing",
+    "Namespace": "Terraria.ID"
+  },
+  "MappingsClass": "NPCID",
+  "MappingsFieldType":  "short",
+  "Mappings": [
+    { "Pattern": "NPC\\.AnyNPCs\\((?<match>\\d+)\\)" },
+    { "Pattern": "SpawnNPC\\(.*,.*, *(?<match>\\d+)\\)" },
+    { "Pattern": "this\\.type == (?<match>\\d+)", "Whitelist": [ "Terraria/NPC.cs" ] }
+  ]
+}

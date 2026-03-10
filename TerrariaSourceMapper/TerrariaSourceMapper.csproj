@@ -8,15 +8,25 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Resources\Mappings.json" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\Mappings.json" />
+    <None Remove="Resources\ItemID.json" />
+    <None Remove="Resources\NPCAIID.json" />
+    <None Remove="Resources\NPCID.json" />
+    <None Remove="Resources\ProjectileID.json" />
+    <None Remove="Resources\TileID.json" />
+    <None Remove="Resources\WallID.json" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="5.3.0-2.final" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\ItemID.json" />
+    <EmbeddedResource Include="Resources\NPCAIID.json" />
+    <EmbeddedResource Include="Resources\NPCID.json" />
+    <EmbeddedResource Include="Resources\ProjectileID.json" />
+    <EmbeddedResource Include="Resources\TileID.json" />
+    <EmbeddedResource Include="Resources\WallID.json" />
   </ItemGroup>
 
 </Project>

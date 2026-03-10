@@ -1,0 +1,11 @@
+{
+  "MappingsSettings": {
+    "kind": "Existing",
+    "Namespace": "Terraria.ID"
+  },
+  "MappingsClass": "WallID",
+  "MappingsFieldType": "ushort",
+  "Mappings": [
+    { "Pattern": "j == (?<match>\\d+)", "MethodPattern": "Calculate", "Whitelist": [ "Terraria/WorldGen.cs" ] }
+  ]
+}

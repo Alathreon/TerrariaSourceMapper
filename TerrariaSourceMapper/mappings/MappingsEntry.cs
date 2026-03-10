@@ -1,6 +1,5 @@
 ﻿using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
-using TerrariaSourceMapper.mappings.mapper;
 
 namespace TerrariaSourceMapper.mappings
 {
@@ -11,11 +10,10 @@ namespace TerrariaSourceMapper.mappings
         public readonly List<string> Blacklist;
         public readonly string Pattern;
         public readonly string? MethodPattern;
-        public readonly IMapper Mapper;
         public readonly bool Ignore;
 
         [JsonConstructor]
-        public MappingsEntry(string Pattern, IMapper Mapper, List<string>? Whitelist = null, List<string>? Blacklist = null, string? MethodPattern = null, bool Ignore = false)
+        public MappingsEntry(string Pattern, List<string>? Whitelist = null, List<string>? Blacklist = null, string? MethodPattern = null, bool Ignore = false)
         {
             if (!new Regex(Pattern).GetGroupNames().Contains(GROUP_NAME))
             {
@@ -34,7 +32,6 @@ namespace TerrariaSourceMapper.mappings
             this.Whitelist = [.. Whitelist.Select(p => p.Replace('/', '\\'))];
             this.Blacklist = [.. Blacklist.Select(p => p.Replace('/', '\\'))]; ;
             this.Pattern = Pattern;
-            this.Mapper = Mapper;
             this.MethodPattern = MethodPattern;
             this.Ignore = Ignore;
         }
