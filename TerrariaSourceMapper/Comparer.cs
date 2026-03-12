@@ -44,6 +44,7 @@ namespace TerrariaSourceMapper
                 Console.WriteLine($"Warning: found {diff.Removed.Count} removed matches");
             }
             Console.WriteLine($"Found {diff.Added.Count} added matches");
+            Console.WriteLine($"Found {diff.Modified.Count} modified matches");
             Console.WriteLine($"Saving to report.diff.json");
             var options = new JsonSerializerOptions
             {
@@ -56,6 +57,7 @@ namespace TerrariaSourceMapper
         {
             var added = new List<ReportDiffEntry>();
             var removed = new List<ReportDiffEntry>();
+            var modified = new List<ReportDiffEntry>();
 
             var allFiles = original.Files.Keys.Union(edited.Files.Keys);
 
@@ -77,21 +79,52 @@ namespace TerrariaSourceMapper
                     var matches1 = entry1?.Matches ?? [];
                     var matches2 = entry2?.Matches ?? [];
 
-                    removed.AddRange(matches1.Except(matches2)
-                        .Select(m => new ReportDiffEntry(file, line!, m)));
+                    foreach (var m1 in matches1)
+                    {
+                        var m2 = matches2.FirstOrDefault(m => ReportMatch.SectionEquals(m, m1));
+                        if (m2 == null)
+                        {
+                            removed.Add(new ReportDiffEntry(file, RecordDiffLine.of(entry1!), m1));
+                        }
+                        else if (!m1.Equals(m2))
+                        {
+                            modified.Add(new ReportDiffEntry(file, RecordDiffLine.of(entry2!), m2));
+                        }
+                    }
 
-                    added.AddRange(matches2.Except(matches1)
-                        .Select(m => new ReportDiffEntry(file, line!, m)));
+                    foreach (var m2 in matches2)
+                    {
+                        var m1 = matches1.FirstOrDefault(m => ReportMatch.SectionEquals(m, m2));
+                        if (m1 == null)
+                        {
+                            added.Add(new ReportDiffEntry(file, RecordDiffLine.of(entry2!), m2));
+                        }
+                    }
                 }
             }
 
             return new ReportDiff(
-                added.OrderBy(e => e.File).ThenBy(e => e.Line).ThenBy(e => e.Match.MatchStart).ToList(),
-                removed.OrderBy(e => e.File).ThenBy(e => e.Line).ThenBy(e => e.Match.MatchStart).ToList()
+                added.Count, modified.Count, removed.Count,
+                added.OrderBy(e => e.File).ThenBy(e => e.Line.Number).ThenBy(e => e.Match.MatchStart).ToList(),
+                modified.OrderBy(e => e.File).ThenBy(e => e.Line.Number).ThenBy(e => e.Match.MatchStart).ToList(),
+                removed.OrderBy(e => e.File).ThenBy(e => e.Line.Number).ThenBy(e => e.Match.MatchStart).ToList()
             );
         }
 
-        private record ReportDiff(List<ReportDiffEntry> Added, List<ReportDiffEntry> Removed);
-        private record ReportDiffEntry(string File, int Line, ReportMatch Match);
+        private record ReportDiff(
+            int AddedCount,
+            int ModifiedCount,
+            int RemovedCount,
+            List<ReportDiffEntry> Added,
+            List<ReportDiffEntry> Modified,
+            List<ReportDiffEntry> Removed);
+        private record ReportDiffEntry(string File, RecordDiffLine Line, ReportMatch Match);
+        private record RecordDiffLine(int Number, string Member, string Content)
+        {
+            public static RecordDiffLine of(ReportEntry entry)
+            {
+                return new RecordDiffLine(entry.Line, entry.Member, entry.Content);
+            }
+        }
     }
 }

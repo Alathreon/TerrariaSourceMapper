@@ -10,5 +10,9 @@
         string ConstantClass,
         string ConstantType)
     {
+        public static bool SectionEquals(ReportMatch x, ReportMatch y)
+        {
+            return x.MatchStart == y.MatchStart && x.MatchLength == y.MatchLength;
+        }
     }
 }
