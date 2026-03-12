@@ -129,6 +129,11 @@ namespace TerrariaSourceMapper
                 }
                 if (reportEntries.Count > 0)
                 {
+                    reportEntries = reportEntries
+                        .OrderBy(e => e.Line)
+                        .ThenBy(e => e.Member)
+                        .ThenBy(e => e.Content)
+                        .ToList();
                     reportDict.Add(relativeFile, reportEntries);
                 }
                 processedFiles++;
@@ -139,9 +144,15 @@ namespace TerrariaSourceMapper
             {
                 WriteIndented = true // pretty print
             };
-            File.WriteAllText(Path.Combine(destination, "report.json"), JsonSerializer.Serialize(report, options));
             Console.WriteLine($"Analyzing done");
             Console.WriteLine($"{total} matches found, {fails} fails");
+            var reportPath = Path.Combine(destination, "report.json");
+            if (File.Exists(reportPath))
+            {
+                Console.WriteLine($"Detected previous report, moving it to report.bak.json");
+                File.Copy(reportPath, Path.Combine(destination, "report.bak.json"), true);
+            }
+            File.WriteAllText(reportPath, JsonSerializer.Serialize(report, options));
         }
         private static List<MappingsResource> ReadResources()
         {
@@ -188,6 +199,6 @@ namespace TerrariaSourceMapper
                 default:
                     throw new NotImplementedException();
             };
-        } 
+        }
     }
 }

@@ -11,7 +11,7 @@ namespace TerrariaSourceMapper
             var destinationProject = Path.Combine(destination, new DirectoryInfo(source).Name + "_patched");
             Console.WriteLine($"Patching from '{source}' to '{destinationProject}'");
             CopyDirectory(source, destinationProject);
-            var report = JsonSerializer.Deserialize<Report>(File.ReadAllText(Path.Combine(destination, "report.json"))) ?? throw new ArgumentException($"Couldn't find report at {destination}/report.json"); ;
+            var report = JsonSerializer.Deserialize<Report>(File.ReadAllText(Path.Combine(destination, "report.json"))) ?? throw new ArgumentException($"Couldn't find report at {destination}/report.json");
 
             Console.WriteLine($"{report.Total - report.Failed}/{report.Total} modifications found");
             Stopwatch stopwatch = Stopwatch.StartNew();
